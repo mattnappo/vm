@@ -8,7 +8,7 @@ vm_ *init_vm()
     RAM *ram = vm->ram;
 
     for (int i = 0; i < RAM_SIZE; i++) {
-        ram->bytes[i] = (byte_ *)malloc(sizeof(byte_ *));   
+        ram->bytes[i] = (byte_ *)malloc(sizeof(byte_ *));
         ram->bytes[i]->address = i;
     }
 
@@ -20,20 +20,18 @@ vm_ *init_vm()
 
 int load_program(vm_ *vm, int program[], int program_size)
 {
-    for (int i = 0; i < 6; i++) {
-        printf("%d\n", program[i]);
-    }
-
     RAM *ram = vm->ram;
     ram->ram_size = program_size;
-    for (int i = 0; i < ram->ram_size; i++) {
-        // printf("%d\n", i);
-        byte_ *byte = (byte_ *)malloc(sizeof(byte_ *));
 
-        byte->byte = program[i];
+    for (int i = 0; i < RAM_SIZE; i++) {
+        byte_ *byte = (byte_ *)malloc(sizeof(byte_ *));
         byte->address = i;
 
         ram->bytes[i] = byte;
+    }
+
+    for (int i = 0; i < ram->ram_size; i++) {
+        ram->bytes[i]->byte = program[i];
     }
 
     return 0;
@@ -42,11 +40,14 @@ int load_program(vm_ *vm, int program[], int program_size)
 int ram_dump(vm_ *vm)
 {
     RAM *ram = vm->ram;
-    for (int i = 0; i < ram->ram_size; i++) {
+    printf("-- START RAM DUMP --\n");
+
+    for (int i = 0; i < RAM_SIZE; i++) {
         byte_ *byte = ram->bytes[i];
-        
-        printf("[0x%d] %d\n", byte->address, byte->byte);
+        printf("[0x%x] 0x%x\n", byte->address, byte->byte);
     }
+
+    printf("-- END RAM DUMP --\n");
     return 0;
 }
 

@@ -19,7 +19,7 @@ typedef struct register_ {
 } register_;
 
 typedef struct byte_ {
-    char byte;
+    int byte;
     int address;
 } byte_;
 
