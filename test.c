@@ -1,18 +1,20 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct a {
-    int thing;
-} b;
+void test(int program[]) {
+    printf("%lu\n", sizeof(program));
+}
 
 int main() {
 
-    b test;
+    int program[] = {
+        1, 2, 0x03, // Set 0x00 into r0
+        0, 0, 0x5 // Set 0x01 into r1
+    };
 
-    test.thing = 10;
-    printf("%d\n", test.thing);
+    printf("%lu\n", sizeof(program));
 
-
+    test(program);
 
     return 0;
 }
