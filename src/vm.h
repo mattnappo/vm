@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define RAM_SIZE 64
+
 typedef enum instructions {
     MOV, // move
     SET, // set
@@ -18,11 +20,12 @@ typedef struct register_ {
 
 typedef struct byte_ {
     char byte;
-    char *address;
+    int address;
 } byte_;
 
 typedef struct RAM {
-    byte_ *bytes[64];
+    int thing;
+    byte_ *bytes[RAM_SIZE];
 } RAM;
 
 typedef struct vm_ {
