@@ -6,36 +6,35 @@
 
 typedef enum instructions {
     MOV, // move
-    ADD, // add
     SET, // set
+    ADD, // add
     SEL, // select
     HLT, // halt
 } instructions;
 
 typedef struct register_ {
-    char byte;
-    char address;
+    char *byte;
+    char *address;
 } register_;
 
 typedef struct byte_ {
-    char byte;
-    char address;
+    char *byte;
+    char *address;
 } byte_;
 
 typedef struct RAM {
-    byte_ bytes[64];
+    byte_ *bytes[64];
 } RAM;
 
 typedef struct vm_ {
-    register_ register_0;
-    register_ register_1;
-    register_ instruction_register;
-
-    char current_instruction;
+    RAM ram;
+    register_ *register_0;
+    register_ *register_1;
+    register_ *instruction_register;
 } vm_;
 
 vm_ *init_vm();
-
 int execute(vm_ *vm, int program[]);
+int eval(vm_ *vm);
 
 #endif
