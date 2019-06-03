@@ -21,12 +21,12 @@ int main()
     ram_dump(vm);
 
     // status = execute(vm);
-    // if (status != 0) {
-    //     printf("error executing program\n");
-    //     return 1;
-    // }
-    
-    // printf("program executed\n");
+    if (status != 0) {
+        printf("error executing program\n");
+        return 1;
+    }
+
+    printf("program executed\n");
 
     return 0;
 }
