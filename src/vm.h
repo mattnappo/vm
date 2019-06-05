@@ -25,7 +25,7 @@ typedef struct byte_ {
 
 typedef struct RAM {
     int ram_size;
-    byte_ bytes[RAM_SIZE];
+    byte_ *bytes[RAM_SIZE];
 } RAM;
 
 typedef struct vm_ {
