@@ -4,22 +4,17 @@ vm_ *init_vm()
 {
     vm_ *vm = malloc(sizeof(vm_));
     vm->ram = malloc(sizeof(RAM));
+    
+    for (int i = 0; i < RAM_SIZE; i++) {
+        byte_ *byte = malloc(sizeof(*byte));
+        byte->address = i;
+        byte->byte = 0;
 
-    // RAM *ram = vm->ram;
+        vm->ram->bytes[i] = byte;
+    }
 
-    // int address = 0;
-    // printf("[%d] %d\n", vm->ram->bytes[address]->address, vm->ram->bytes[address]->byte);
-
-    // for (int i = 0; i < RAM_SIZE; i++) {
-    //     byte_ *byte = malloc(sizeof(*byte));
-    //     byte->address = i;
-    //     byte->byte = 0;
-
-    //     ram->bytes[i] = byte;
-    // }
-
-    // vm->register_0 = (register_ *)malloc(sizeof(register_ *));
-    // vm->register_1 = (register_ *)malloc(sizeof(register_ *));
+    vm->register_0 = malloc(sizeof(register_));
+    vm->register_1 = malloc(sizeof(register_));
 
     return vm;
 }
@@ -27,9 +22,9 @@ vm_ *init_vm()
 int load_program(vm_ *vm, int program[], int program_size)
 {
     RAM *ram = vm->ram;
-    ram->ram_size = program_size;
+    ram->program_size = program_size;
 
-    for (int i = 0; i < RAM_SIZE; i++) {
+    for (int i = 0; i < ram->program_size; i++) {
         ram->bytes[i]->byte = program[i];
     }
 
@@ -48,6 +43,18 @@ int ram_dump(vm_ *vm)
     }
 
     printf("-- END RAM DUMP --\n");
+    return 0;
+}
+
+int clear_ram(vm_ *vm)
+{
+    for (int i = 0; i < RAM_SIZE; i++) {
+        byte_ *byte = malloc(sizeof(*byte));
+        byte->byte = 0;
+
+        vm->ram->bytes[i] = byte;
+    }
+
     return 0;
 }
 

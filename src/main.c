@@ -13,27 +13,25 @@ int main()
 
     vm_ *vm = init_vm();
 
-    // status = load_program(vm, program, program_size);
-    // if (status != 0) {
-    //     printf("could not load program\n");
-    //     return 1;
-    // }
-
-    // // printf("byte_* size: %lu\n", sizeof(byte_ *));
-
-    // // int address = 0;
-    // // printf("[%d] %d\n", vm->ram->bytes[address]->address, vm->ram->bytes[address]->byte);
-
+    status = load_program(vm, program, program_size);
+    if (status != 0) {
+        printf("could not load program\n");
+        return 1;
+    }
 
     ram_dump(vm);
 
-    // // status = execute(vm);
-    // if (status != 0) {
-    //     printf("error executing program\n");
-    //     return 1;
-    // }
+    status = execute(vm);
+    if (status != 0) {
+        printf("error executing program\n");
+        return 1;
+    }
 
-    // printf("program executed\n");
+    printf("program executed\n");
 
+    clear_ram(vm);
+
+    ram_dump(vm);
+    
     return 0;
 }

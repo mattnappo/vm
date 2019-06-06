@@ -24,7 +24,7 @@ typedef struct byte_ {
 } byte_;
 
 typedef struct RAM {
-    int ram_size;
+    int program_size;
     byte_ *bytes[RAM_SIZE];
 } RAM;
 
@@ -40,6 +40,7 @@ typedef struct vm_ {
 vm_ *init_vm();
 int load_program(vm_ *vm, int program[], int program_size);
 int ram_dump(vm_ *vm);
+int clear_ram(vm_ *vm);
 
 int execute(vm_ *vm);
 
