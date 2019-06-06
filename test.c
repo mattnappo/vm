@@ -23,7 +23,7 @@ int main() {
     // printf("address: %d\n   byte: %d\n", byte->address, byte->byte);
 
     RAM *ram = malloc(sizeof(*ram));
-
+    printf("%lu\n", sizeof(byte_));
     for (int i = 0; i < RAM_SIZE; i++) {
         byte_ *byte = malloc(sizeof(*byte));
         byte->byte = 8;

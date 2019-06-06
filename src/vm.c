@@ -3,40 +3,20 @@
 vm_ *init_vm()
 {
     vm_ *vm = malloc(sizeof(vm_));
-    vm->ram = malloc(sizeof(RAM *));
+    vm->ram = malloc(sizeof(RAM));
 
-    RAM *ram = vm->ram;
-    
-    // ram->bytes[0] = (byte_ *)malloc(sizeof(byte_ *));
-    // ram->bytes[0]->byte    = 0;
-    // ram->bytes[0]->address = 0;
+    // RAM *ram = vm->ram;
 
-    int address = 0;
-    printf("[%d] %d\n", vm->ram->bytes[address]->address, vm->ram->bytes[address]->byte);
+    // int address = 0;
+    // printf("[%d] %d\n", vm->ram->bytes[address]->address, vm->ram->bytes[address]->byte);
 
-    // ram->bytes[1] = (byte_ *)malloc(sizeof(byte_ *));
-    // ram->bytes[1]->byte    = 0;
-    // ram->bytes[1]->address = 1;
+    // for (int i = 0; i < RAM_SIZE; i++) {
+    //     byte_ *byte = malloc(sizeof(*byte));
+    //     byte->address = i;
+    //     byte->byte = 0;
 
-    // ram->bytes[2] = (byte_ *)malloc(sizeof(byte_ *));
-    // ram->bytes[2]->byte    = 0;
-    // ram->bytes[2]->address = 2;
-
-    // ram->bytes[3] = (byte_ *)malloc(sizeof(byte_ *));
-    // ram->bytes[3]->byte    = 0;
-    // ram->bytes[3]->address = 3;
-
-    for (int i = 0; i < RAM_SIZE; i++) {
-        // byte_ *byte = (byte_ *)malloc(sizeof(byte_ *));
-        // byte->address = i;
-        // byte->byte = 0;
-
-        // ram->bytes[i]- = byte;
-
-        ram->bytes[i] = malloc(1000);
-        ram->bytes[i]->byte    = 0;
-        ram->bytes[i]->address = 0;
-    }
+    //     ram->bytes[i] = byte;
+    // }
 
     // vm->register_0 = (register_ *)malloc(sizeof(register_ *));
     // vm->register_1 = (register_ *)malloc(sizeof(register_ *));
@@ -49,7 +29,7 @@ int load_program(vm_ *vm, int program[], int program_size)
     RAM *ram = vm->ram;
     ram->ram_size = program_size;
 
-    for (int i = 0; i < ram->ram_size; i++) {
+    for (int i = 0; i < RAM_SIZE; i++) {
         ram->bytes[i]->byte = program[i];
     }
 
