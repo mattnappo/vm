@@ -94,9 +94,21 @@ int execute(vm_ *vm)
             return 1;
         }
 
-
-
     }
+
+    return 0;
+}
+
+int delete_vm(vm_ *vm)
+{
+    for (int i = 0; i < RAM_SIZE; i++) {
+        free(vm->ram->bytes[i]);
+    }
+
+    free(vm->ram);
+    free(vm->register_0);
+    free(vm->register_1);
+    free(vm);
 
     return 0;
 }

@@ -41,6 +41,7 @@ vm_ *init_vm();
 int load_program(vm_ *vm, int program[], int program_size);
 int ram_dump(vm_ *vm);
 int clear_ram(vm_ *vm);
+int delete_vm(vm_ *vm);
 
 int execute(vm_ *vm);
 

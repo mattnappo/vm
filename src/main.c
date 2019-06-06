@@ -32,6 +32,8 @@ int main()
     clear_ram(vm);
 
     ram_dump(vm);
+
+    delete_vm(vm);
     
     return 0;
 }
