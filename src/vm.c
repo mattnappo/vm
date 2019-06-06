@@ -16,6 +16,9 @@ vm_ *init_vm()
     vm->register_0 = malloc(sizeof(register_));
     vm->register_1 = malloc(sizeof(register_));
 
+    vm->IAR = malloc(sizeof(register_));
+    vm->instruction_register = malloc(sizeof(register_));
+
     return vm;
 }
 
@@ -31,15 +34,20 @@ int load_program(vm_ *vm, int program[], int program_size)
     return 0;
 }
 
-int ram_dump(vm_ *vm)
+int ram_dump(vm_ *vm, int hex)
 {
     RAM *ram = vm->ram;
     printf("-- START RAM DUMP --\n");
 
     for (int i = 0; i < RAM_SIZE; i++) {
         byte_ *byte = ram->bytes[i];
-        printf("[0x%x] 0x%x\n", byte->address, byte->byte);
-        // printf("[%d] %d\n", byte.address, byte.byte);
+        if (hex) {
+            printf("[0x%x] 0x%x\n", byte->address, byte->byte);
+        }
+        else {
+            printf("[%d] %d\n", byte->address, byte->byte);
+
+        }
     }
 
     printf("-- END RAM DUMP --\n");
@@ -60,40 +68,54 @@ int clear_ram(vm_ *vm)
 
 int eval(vm_ *vm)
 {
-    RAM *ram = vm->ram;
-    // int instruction_address_register = vm->instruction_address_register;
-    // int instruction = ram->bytes[instruction_address_register];
-    int instruction = 0;
-
-    switch (instruction) {
+    switch (vm->instruction_register->byte) {
     case MOV:
         break;
     case SET:
+        vm->IAR->byte++;
+        int byte    = vm->ram->bytes[vm->IAR->byte]->byte;
+        
+        vm->IAR->byte++;
+        int address = vm->ram->bytes[vm->IAR->byte]->byte;
+        printf("address: %d\nsize: %d\n", address, vm->ram->program_size);
+        if (address < vm->ram->program_size) {
+            printf("asdasdasd\n");
+            return 0;
+        }
+
+        byte_ *new_byte = malloc(sizeof(byte_));
+        new_byte->address = address;
+        new_byte->byte = byte;
+
+        vm->ram->bytes[address] = new_byte;
         break;
     case ADD:
         break;
     case HLT:
+        printf("halting\n\n\n");
         return 1;
     default:
         return 1;
     }
-
+    
+    vm->IAR->byte++;
     return 0;
 }
 
 int execute(vm_ *vm)
 {
-    int halt = 0;
+    vm->IAR->byte = 0;
+    int current_instruction_address = vm->IAR->byte;
 
-    while (!halt) {
-        int status = eval(vm);
-        if (status == 0) {
-            return 0;
-        }
-        else {
+    vm->instruction_register->byte = vm->ram->bytes[current_instruction_address]->byte;
+    
+    int status = 0;
+    while (1) {
+        status = eval(vm);
+        printf("status: %d\n\n", status);
+        if (status == 1) {
             return 1;
         }
-
     }
 
     return 0;

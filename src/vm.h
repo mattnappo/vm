@@ -15,7 +15,7 @@ typedef enum instructions {
 } instructions;
 
 typedef struct register_ {
-    char byte;
+    int byte;
 } register_;
 
 typedef struct byte_ {
@@ -34,12 +34,12 @@ typedef struct vm_ {
     register_ *register_1;
 
     register_ *instruction_register;
-    register_ *instruction_address_register;
+    register_ *IAR;
 } vm_;
 
 vm_ *init_vm();
 int load_program(vm_ *vm, int program[], int program_size);
-int ram_dump(vm_ *vm);
+int ram_dump(vm_ *vm, int hex);
 int clear_ram(vm_ *vm);
 int delete_vm(vm_ *vm);
 
