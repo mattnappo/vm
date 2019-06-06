@@ -5,7 +5,8 @@ int main()
     int program[] = {
         SET, 200, 20,
         SET, 30, 11,
-        SET, 123234564, 61
+        SET, 123234564, 61,
+        HLT
     };
     int program_size = sizeof(program)/sizeof(program[0]);
 
@@ -22,10 +23,11 @@ int main()
     ram_dump(vm, 0);
 
     status = execute(vm);
-    if (status != 0) {
+    if (status < 0) {
         printf("error executing program\n");
         return 1;
     }
+
     ram_dump(vm, 0);
 
     printf("program executed\n");

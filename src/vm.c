@@ -68,19 +68,22 @@ int clear_ram(vm_ *vm)
 
 int eval(vm_ *vm)
 {
+    if (vm->IAR->byte > vm->ram->program_size) {
+        return 0;
+    }
+
     switch (vm->instruction_register->byte) {
     case MOV:
         break;
     case SET:
         vm->IAR->byte++;
-        int byte    = vm->ram->bytes[vm->IAR->byte]->byte;
-        
+        int byte = vm->ram->bytes[vm->IAR->byte]->byte;
         vm->IAR->byte++;
         int address = vm->ram->bytes[vm->IAR->byte]->byte;
-        printf("address: %d\nsize: %d\n", address, vm->ram->program_size);
+        
         if (address < vm->ram->program_size) {
-            printf("asdasdasd\n");
-            return 0;
+            printf("that memory is not accessible\n");
+            return -1;
         }
 
         byte_ *new_byte = malloc(sizeof(byte_));
@@ -92,14 +95,13 @@ int eval(vm_ *vm)
     case ADD:
         break;
     case HLT:
-        printf("halting\n\n\n");
-        return 1;
+        return 0;
     default:
-        return 1;
+        return -1;
     }
     
     vm->IAR->byte++;
-    return 0;
+    return 1;
 }
 
 int execute(vm_ *vm)
@@ -110,15 +112,20 @@ int execute(vm_ *vm)
     vm->instruction_register->byte = vm->ram->bytes[current_instruction_address]->byte;
     
     int status = 0;
+    /* STATUS CODES
+            0 = program has terminated
+            1 = everything is fine
+            -1 = something went wrong
+    */
+
     while (1) {
         status = eval(vm);
-        printf("status: %d\n\n", status);
-        if (status == 1) {
-            return 1;
+        if (status != 1) {
+            break;
         }
     }
-
-    return 0;
+    printf("%d\n\n", status);
+    return status;
 }
 
 int delete_vm(vm_ *vm)
