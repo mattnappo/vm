@@ -3,14 +3,18 @@
 int main()
 {
     int program[] = {
-        SET, 200, 20,
+        SET, 200, 30,
         SET, 30, 30,
         SET, 123234564, 61,
         MOV, 61, 58,
-        MOV, 20, 12,
+        MOV, 20, 55,
+        SET, 10, 40,
+        SET, 10, 41,
+        ADD, 40, 41, 42,
         HLT
     };
     int program_size = sizeof(program)/sizeof(program[0]);
+    printf("program size: %d\n", program_size);
 
     int status;
 
@@ -22,7 +26,7 @@ int main()
         return 1;
     }
 
-    ram_dump(vm, 1);
+    ram_dump(vm, 0);
 
     status = execute(vm);
     if (status < 0) {
@@ -30,7 +34,7 @@ int main()
         return 1;
     }
 
-    ram_dump(vm, 1);
+    ram_dump(vm, 0);
 
     printf("program executed\n");
 

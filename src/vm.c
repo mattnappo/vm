@@ -93,7 +93,7 @@ int eval(vm_ *vm)
         int address = vm->ram->bytes[vm->IAR->byte]->byte;
         
         if (address < vm->ram->program_size) {
-            printf("that memory is not accessible\n");
+            printf("SET: address %d is not accessible\n", address);
             return -1;
         }
 
@@ -104,6 +104,24 @@ int eval(vm_ *vm)
         vm->ram->bytes[address] = new_byte;
         break;
     case ADD:
+        vm->IAR->byte++;
+        int addend_addr_1 = vm->ram->bytes[vm->IAR->byte]->byte;
+        vm->IAR->byte++;
+        int addend_addr_2 = vm->ram->bytes[vm->IAR->byte]->byte;
+
+        vm->IAR->byte++;
+        int output_address = vm->ram->bytes[vm->IAR->byte]->byte;
+
+        if (output_address < vm->ram->program_size) {
+            printf("that memory is not accessible\n");
+            return -1;
+        }
+
+        int addend_1 = vm->ram->bytes[addend_addr_1]->byte;
+        int addend_2 = vm->ram->bytes[addend_addr_2]->byte;
+
+        vm->ram->bytes[output_address]->byte = (addend_1 + addend_2);
+
         break;
     case HLT:
         return 0;
