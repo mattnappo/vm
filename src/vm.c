@@ -68,36 +68,31 @@ int clear_ram(vm_ *vm)
 
 int eval(vm_ *vm)
 {
-    if (vm->IAR->byte > vm->ram->program_size) {
-        return 0;
-    }
-
     int current_instruction = vm->ram->bytes[vm->IAR->byte]->byte;
     vm->instruction_register->byte = current_instruction;
-    printf("IAR: %d\nIR: %d\n", vm->IAR->byte, vm->instruction_register->byte);
 
     switch (vm->instruction_register->byte) {
     case MOV:
         vm->IAR->byte++;
         int address_1 = vm->ram->bytes[vm->IAR->byte]->byte;
-        printf("address_1: %d\n", address_1);
         vm->IAR->byte++;
         int address_2 = vm->ram->bytes[vm->IAR->byte]->byte;
-        printf("address_2: %d\n", address_2);
+
+        if (address_2 < vm->ram->program_size) {
+            printf("that memory is not accessible\n");
+            return -1;
+        }
 
         vm->ram->bytes[address_2]->byte = vm->ram->bytes[address_1]->byte;
         break;
     case SET:
         vm->IAR->byte++;
         int byte = vm->ram->bytes[vm->IAR->byte]->byte;
-        printf("read: %d\n", vm->ram->bytes[vm->IAR->byte]->byte);
 
         vm->IAR->byte++;
         int address = vm->ram->bytes[vm->IAR->byte]->byte;
-        printf("read: %d\n", vm->ram->bytes[vm->IAR->byte]->byte);
         
         if (address < vm->ram->program_size) {
-            printf("address: %d\nprogram_size: %d\n", address, vm->ram->program_size);
             printf("that memory is not accessible\n");
             return -1;
         }
@@ -133,12 +128,6 @@ int execute(vm_ *vm)
         1 = everything is fine
         -1 = something went wrong
     */
-    // status = eval(vm);
-    // status = eval(vm);
-    // status = eval(vm);
-    // status = eval(vm);
-    // status = eval(vm);
-    
 
     while (1) {
         status = eval(vm);
@@ -146,7 +135,6 @@ int execute(vm_ *vm)
             break;
         }
     }
-    printf("%d\n\n", status);
     return status;
 }
 

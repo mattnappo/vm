@@ -7,7 +7,7 @@ int main()
         SET, 30, 30,
         SET, 123234564, 61,
         MOV, 61, 58,
-        MOV, 20, 63,
+        MOV, 20, 12,
         HLT
     };
     int program_size = sizeof(program)/sizeof(program[0]);
@@ -22,7 +22,7 @@ int main()
         return 1;
     }
 
-    ram_dump(vm, 0);
+    ram_dump(vm, 1);
 
     status = execute(vm);
     if (status < 0) {
@@ -30,7 +30,7 @@ int main()
         return 1;
     }
 
-    ram_dump(vm, 0);
+    ram_dump(vm, 1);
 
     printf("program executed\n");
 
