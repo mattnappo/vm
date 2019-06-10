@@ -6,6 +6,14 @@
 
 #define RAM_SIZE 64
 
+/* INSTRUCTIONS
+    SET <value> <address>
+    MOV <from> <to>
+    ADD <address 1> <address 2> <output address>
+    SEL <address>
+    HLT (no params)
+*/
+
 typedef enum instructions {
     MOV, // move
     SET, // set

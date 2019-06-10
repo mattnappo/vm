@@ -4,8 +4,10 @@ int main()
 {
     int program[] = {
         SET, 200, 20,
-        SET, 30, 11,
+        SET, 30, 30,
         SET, 123234564, 61,
+        MOV, 61, 58,
+        MOV, 20, 63,
         HLT
     };
     int program_size = sizeof(program)/sizeof(program[0]);
