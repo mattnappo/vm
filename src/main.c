@@ -1,19 +1,9 @@
 #include "vm.h"
+#include "parser.h"
 
-int main()
+int proram()
 {
-    int program[] = {
-        SET, 200, 30,
-        SET, 30, 30,
-        SET, 123234564, 61,
-        MOV, 61, 58,
-        MOV, 20, 55,
-        SET, 10, 40,
-        SET, 10, 41,
-        ADD, 40, 41, 63,
-        MOV, 61, 62,
-        HLT
-    };
+    int program[] = {};
     int program_size = sizeof(program)/sizeof(program[0]);
     printf("program size: %d\n", program_size);
 
@@ -40,6 +30,13 @@ int main()
     printf("program executed\n");
 
     delete_vm(vm);
+
+    return 0;
+}
+
+int main()
+{
+    int *program = parse("input.prgm");
 
     return 0;
 }
