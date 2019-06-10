@@ -18,7 +18,6 @@ typedef enum instructions {
     MOV, // move
     SET, // set
     ADD, // add
-    SEL, // select
     HLT, // halt
 } instructions;
 

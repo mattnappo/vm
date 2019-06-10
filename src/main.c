@@ -10,7 +10,8 @@ int main()
         MOV, 20, 55,
         SET, 10, 40,
         SET, 10, 41,
-        ADD, 40, 41, 42,
+        ADD, 40, 41, 63,
+        MOV, 61, 62,
         HLT
     };
     int program_size = sizeof(program)/sizeof(program[0]);

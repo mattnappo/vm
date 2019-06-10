@@ -74,12 +74,12 @@ int eval(vm_ *vm)
     switch (vm->instruction_register->byte) {
     case MOV:
         vm->IAR->byte++;
-        int address_1 = vm->ram->bytes[vm->IAR->byte]->byte;
+        int address_1 = vm->ram->bytes[vm->IAR->byte]->byte; // From addr
         vm->IAR->byte++;
-        int address_2 = vm->ram->bytes[vm->IAR->byte]->byte;
+        int address_2 = vm->ram->bytes[vm->IAR->byte]->byte; // To addr
 
         if (address_2 < vm->ram->program_size) {
-            printf("that memory is not accessible\n");
+            printf("MOV: address %d is not accessible\n", address_2);
             return -1;
         }
 
@@ -113,7 +113,7 @@ int eval(vm_ *vm)
         int output_address = vm->ram->bytes[vm->IAR->byte]->byte;
 
         if (output_address < vm->ram->program_size) {
-            printf("that memory is not accessible\n");
+            printf("ADD: address %d is not accessible\n", output_address);
             return -1;
         }
 
@@ -142,7 +142,7 @@ int execute(vm_ *vm)
     
     int status = 0;
     /* STATUS CODES
-        0 = program has terminated
+        0 = program has terminated with no errors
         1 = everything is fine
         -1 = something went wrong
     */
