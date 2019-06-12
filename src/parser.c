@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "parser.h"
 
 read_file_return read_file(char *input_file)
@@ -36,9 +37,19 @@ read_file_return read_file(char *input_file)
 
 int *parse(char *input_file)
 {
-    read_file_return file = read_file(input_file);
+    // split every space and line break
+    // remove all extra spaces and line breaks
+    // swap out the ADDs and SETs for 1s and 0s ...
+    char *file = read_file(input_file).buffer;
 
-    for (long i = 0; i < file.length; i++) {
-
+    char *parsed;
+    int counter = 0;
+    char *delim = "\n";
+    parsed = strtok(file, delim);
+    while (parsed != NULL) {
+        printf("-- COUNT: %d --\n", counter);
+        printf("\"%s\"\n", parsed);
+        parsed = strtok(NULL, delim);
+        counter++;
     }
 }
