@@ -37,6 +37,6 @@ int proram()
 int main()
 {
     int *program = parse("input.prgm");
-
+    
     return 0;
 }

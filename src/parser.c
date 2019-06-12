@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "parser.h"
 
-int *parse(char *input_file)
+read_file_return read_file(char *input_file)
 {
     char *buffer = 0;
     long length;
@@ -19,10 +20,25 @@ int *parse(char *input_file)
     }
 
     if (buffer) {
-        printf("%s\n", buffer);
+        read_file_return returns = {
+            buffer,
+            length
+        };
+        return returns;
     }
-    
-    int *arr = {0};
 
-    return arr;
+    read_file_return returns = {
+        "error reading file",
+        0
+    };
+    return returns;
+}
+
+int *parse(char *input_file)
+{
+    read_file_return file = read_file(input_file);
+
+    for (long i = 0; i < file.length; i++) {
+
+    }
 }
