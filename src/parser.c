@@ -51,16 +51,16 @@ int *parse(char *input_file)
     parsed[0] = token;
     
     int instruction_count = 1;
-    printf("\"%s\"\n", token);
+    // printf("\"%s\"\n", token);
     while (token != NULL) {
-        printf("\"%s\"\n", token);
+        // printf("\"%s\"\n", token);
         token = strtok(NULL, delim);
         parsed[instruction_count] = token;
         instruction_count++;
         
-        printf("[%d] this is running\n", instruction_count);
+        // printf("[%d] this is running\n", instruction_count);
     }
-    printf("DONE\n");
+    // printf("DONE\n");
 
     // for (int i = 0; i < INSTRUCTION_LIMIT; i++) {
     //     // if (strcmp(parsed[i], NULL)) {
@@ -75,26 +75,24 @@ int *parse(char *input_file)
     // }
     // printf("we good\n");
 
-    char instruction_tokens[4][3] = {
-        "MOV",
-        "SET",
-        "ADD",
-        "HLT",
-    };
-    printf("%s\n", instruction_tokens[2]);
-    
     int *instructions = malloc(sizeof(int) * sizeof(instruction_count));
     for (int i = 0; i < instruction_count; i++) {
-        for (int j = 0; j < sizeof(instruction_tokens) / sizeof(instruction_tokens[0]); j++) {
-            // printf("%s\r\n\r\n", instruction_tokens[2]);
-            // printf("\r\n\r\n");
-            // if (strcmp(parsed[i], instruction_tokens[j])) {
-    //             // instructions[i] = j;
-            // }
+        if (strcmp(parsed[i], "\0") == 1) {
+            break;
         }
-
-    //     // instructions[i] = atoi(parsed[i]);
+        // printf("[ parsed[i] ] `%s`\n", parsed[i]);
+        // if (strcmp(parsed[i], "MOV") == 0) {
+        //     instructions[i] = 0;
+        // } else if (strcmp(parsed[i], "SET") == 0) {
+        //     instructions[i] = 1;
+        // } else if (strcmp(parsed[i], "ADD") == 0) {
+        //     instructions[i] = 2;
+        // } else if (strcmp(parsed[i], "HLT") == 0) {
+        //     instructions[i] = 3;
+        // } else {
+        //     instructions[i] = atoi(parsed[i]);
+        // }
     }
-    
+
     return 0;
 }
