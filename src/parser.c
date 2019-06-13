@@ -75,21 +75,25 @@ int *parse(char *input_file)
     // }
     // printf("we good\n");
 
-    char **instruction_tokens = {
+    char instruction_tokens[4][3] = {
         "MOV",
         "SET",
         "ADD",
         "HLT",
     };
+    printf("%s\n", instruction_tokens[2]);
+    
     int *instructions = malloc(sizeof(int) * sizeof(instruction_count));
     for (int i = 0; i < instruction_count; i++) {
         for (int j = 0; j < sizeof(instruction_tokens) / sizeof(instruction_tokens[0]); j++) {
-            if (strcmp(parsed[i], instruction_tokens[j])) {
-                instructions[i] = j;
-            }
+            // printf("%s\r\n\r\n", instruction_tokens[2]);
+            // printf("\r\n\r\n");
+            // if (strcmp(parsed[i], instruction_tokens[j])) {
+    //             // instructions[i] = j;
+            // }
         }
 
-        instructions[i] = atoi(parsed[i]);
+    //     // instructions[i] = atoi(parsed[i]);
     }
     
     return 0;
