@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "parser.h"
+
+#define TOKEN_SIZE 8
+#define INSTRUCTION_LIMIT 100
 
 read_file_return read_file(char *input_file)
 {
@@ -38,9 +42,6 @@ int *parse(char *input_file)
 {
     read_file_return file = read_file(input_file);
     printf("-- START FILE READ --\n%s\n-- END FILE READ\n", file.buffer);
-    // for (long i = 0; i < file.length; i++) {
-
-    // }
 
 
 }

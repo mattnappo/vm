@@ -3,7 +3,8 @@
 
 int program()
 {
-    int program[] = {};
+    int *program = parse("input.prgm");
+    // int program[] = {};
     int program_size = sizeof(program)/sizeof(program[0]);
     printf("program size: %d\n", program_size);
 
