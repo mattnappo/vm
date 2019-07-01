@@ -1,7 +1,7 @@
 #include "vm.h"
 #include "parser.h"
 
-int proram()
+int program()
 {
     int program[] = {};
     int program_size = sizeof(program)/sizeof(program[0]);
