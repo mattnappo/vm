@@ -40,7 +40,23 @@ read_file_return read_file(char *input_file)
 
 int *parse(char *input_file)
 {
+    char **symbols = malloc(sizeof(char) * INSTRUCTION_LIMIT * TOKEN_SIZE);
     read_file_return file = read_file(input_file);
     printf("-- START FILE READ --\n%s\n-- END FILE READ\n", file.buffer);
 
+    int token_count = 0;
+    char *delimiters = " ";
+
+    char *token = strtok(file.buffer, delimiters);
+    symbols[token_count] = token;
+
+    while (token != NULL) {
+        printf("%s\n", token);
+        token = strtok(NULL, delimiters);
+        symbols[token_count] = token;
+        token_count++;
+    }
+    
+    int *base;
+    return base;
 }
