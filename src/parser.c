@@ -43,5 +43,4 @@ int *parse(char *input_file)
     read_file_return file = read_file(input_file);
     printf("-- START FILE READ --\n%s\n-- END FILE READ\n", file.buffer);
 
-
 }
