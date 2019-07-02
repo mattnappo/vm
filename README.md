@@ -1,5 +1,5 @@
 # VM
-A simple virtual machine in C.
+A simple virtual machine in C written for educational purposes.
 
 ## Instructions
 
