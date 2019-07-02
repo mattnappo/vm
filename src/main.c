@@ -1,20 +1,12 @@
 #include "vm.h"
+#include "parser.h"
 
-int main()
+int execute_file(char *file_name)
 {
-    int program[] = {
-        SET, 200, 30,
-        SET, 30, 30,
-        SET, 123234564, 61,
-        MOV, 61, 58,
-        MOV, 20, 55,
-        SET, 10, 40,
-        SET, 10, 41,
-        ADD, 40, 41, 63,
-        MOV, 61, 62,
-        HLT
-    };
-    int program_size = sizeof(program)/sizeof(program[0]);
+    parsed_file raw_program = parse(file_name);
+
+    int *program = raw_program.program;
+    int program_size = raw_program.size;
     printf("program size: %d\n", program_size);
 
     int status;
@@ -27,7 +19,7 @@ int main()
         return 1;
     }
 
-    ram_dump(vm, 0);
+    ram_dump(vm, 1);
 
     status = execute(vm);
     if (status < 0) {
@@ -35,11 +27,16 @@ int main()
         return 1;
     }
 
-    ram_dump(vm, 0);
-
+    ram_dump(vm, 1);
     printf("program executed\n");
-
     delete_vm(vm);
 
+    return 0;
+}
+
+int main()
+{
+    int status = execute_file("input.prgm");
+    printf("\n-- PRGM STATUS: %d --\n", status);
     return 0;
 }
