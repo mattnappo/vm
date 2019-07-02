@@ -11,6 +11,11 @@ typedef struct tokenize_return {
     unsigned int token_count;
 } tokenize_return;
 
-int *parse(char *input_file);
+typedef struct parsed_file {
+    int *program;
+    int size;
+} parsed_file;
+
+parsed_file parse(char *input_file);
 
 #endif
