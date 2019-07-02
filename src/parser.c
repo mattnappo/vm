@@ -42,7 +42,6 @@ int *parse(char *input_file)
 {
     char **symbols = malloc(sizeof(char) * INSTRUCTION_LIMIT * TOKEN_SIZE);
     read_file_return file = read_file(input_file);
-    printf("-- START FILE READ --\n%s\n-- END FILE READ\n", file.buffer);
 
     int token_count = 0;
     char *delimiters = " ";
@@ -51,10 +50,13 @@ int *parse(char *input_file)
     symbols[token_count] = token;
 
     while (token != NULL) {
-        printf("%s\n", token);
         token = strtok(NULL, delimiters);
         symbols[token_count] = token;
         token_count++;
+    }
+
+    for (int i = 0; i < token_count; i++) {
+        printf("%s\n", symbols[i]);
     }
     
     int *base;
