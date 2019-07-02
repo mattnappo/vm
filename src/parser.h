@@ -6,6 +6,11 @@ typedef struct read_file_return {
     long length;
 } read_file_return;
 
+typedef struct tokenize_return {
+    char **tokens;
+    unsigned int token_count;
+} tokenize_return;
+
 int *parse(char *input_file);
 
 #endif
