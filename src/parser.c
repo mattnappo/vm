@@ -5,9 +5,9 @@
 // read_file reads a file as a char* from the disk given the filepath.
 read_file_return read_file(char *input_file)
 {
-	/* THE IMPLEMENTATION OF THIS FUNCTION WAS WRITTEN BY @Nils Pipenbrinck.
-	 * He can be reached at https://stackoverflow.com/users/15955/nils-pipenbrinck
-	*/
+    /* THE IMPLEMENTATION OF THIS FUNCTION WAS WRITTEN BY @Nils Pipenbrinck.
+     * He can be reached at https://stackoverflow.com/users/15955/nils-pipenbrinck
+    */
 
     char *buffer = 0;
     long length;
@@ -43,17 +43,17 @@ read_file_return read_file(char *input_file)
 // and input file.
 tokenize_return tokenize(char *input_file)
 {
-	// Prepare the char** of symbols
+    // Prepare the char** of symbols
     char **symbols = malloc(sizeof(char) * INSTRUCTION_LIMIT * TOKEN_SIZE);
     
-	// Call the read_file() abstraction method to read the file as a string
-	// given the path.
-	read_file_return file = read_file(input_file);
+    // Call the read_file() abstraction method to read the file as a string
+    // given the path.
+    read_file_return file = read_file(input_file);
 
     int token_count = 0;
     char *delimiters = " \n";
 
-	// Read the current token
+    // Read the current token
     char *token = strtok(file.buffer, delimiters);
     symbols[token_count] = token; // Appent the token to the array of tokens
     token_count = 1;
@@ -63,7 +63,7 @@ tokenize_return tokenize(char *input_file)
         token_count++;
     }
 
-	// Return the tokens and the amount of tokens
+    // Return the tokens and the amount of tokens
     token_count--;
     tokenize_return tokenized = {
         symbols,
@@ -77,11 +77,11 @@ tokenize_return tokenize(char *input_file)
 // a program ready for the virtual machine to process.
 parsed_file parse(char *input_file)
 {
-	// Parse the input file and get its tokens
+    // Parse the input file and get its tokens
     tokenize_return tokens_raw = tokenize(input_file);
     int *parsed = malloc(sizeof(int) * INSTRUCTION_LIMIT);
 
-	// Convert the tokens into integers
+    // Convert the tokens into integers
     for (int i = 0; i < tokens_raw.token_count; i++) {
         char *token = tokens_raw.tokens[i];
 
@@ -100,7 +100,7 @@ parsed_file parse(char *input_file)
         }
     }
 
-	// Return the program and amount of bytes it requires
+    // Return the program and amount of bytes it requires
     parsed_file program = {
         parsed,
         tokens_raw.token_count

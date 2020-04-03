@@ -24,8 +24,8 @@ typedef enum instruction {
 
 // display_type allows for switching between hexidecimal and decimal RAM dumps.
 typedef enum display_type {
-	HEX, // Hexidecimal printing
-	DECIMAL, // Decimal printing
+    HEX, // Hexidecimal printing
+    DECIMAL, // Decimal printing
 } display_type;
 
 // register_ represents a register within the virtual machine.
@@ -49,7 +49,7 @@ typedef struct RAM {
 typedef struct vm_ {
     RAM *ram; // The random access memory of the virtual machine
 
-	register_ *instruction_register; // the instruction register
+    register_ *instruction_register; // the instruction register
     register_ *IAR; // The instruction address register
 } vm_;
 
