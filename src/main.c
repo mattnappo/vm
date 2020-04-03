@@ -30,7 +30,7 @@ int execute_file(char *file_name)
 	// The memory at the current state of the virtual machine at this point
 	// should contain only the bytes of the program that was just loaded
 	// into the virtual machine.
-    ram_dump(vm, 1);
+    ram_dump(vm, HEX);
 
 	// Call the execute() abstraction method, which executes the program
 	// loaded into the virtual machine.
@@ -41,7 +41,7 @@ int execute_file(char *file_name)
     }
 
 	// Print the current state of the virtual machine's memory (again).
-    ram_dump(vm, 1);
+    ram_dump(vm, HEX);
     printf("program executed\n");
 	delete_vm(vm); // Free the memory allocated by the virtual machine
 

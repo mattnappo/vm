@@ -20,9 +20,6 @@ vm_ *init_vm()
         vm->ram->bytes[i] = byte; // Set the byte in the VM's RAM to the newly-made byte
     }
 
-    vm->register_0 = malloc(sizeof(register_));
-    vm->register_1 = malloc(sizeof(register_));
-
 	// Initialize the necessary registers in the virtual machine
     vm->IAR = malloc(sizeof(register_));
     vm->instruction_register = malloc(sizeof(register_));
@@ -48,7 +45,7 @@ int load_program(vm_ *vm, int program[], int program_size)
 }
 
 // ram_dump prints the ram of a virtual machine in either hexadecimal or decimal.
-int ram_dump(vm_ *vm, int hex)
+int ram_dump(vm_ *vm, display_type type)
 {
     RAM *ram = vm->ram; // Access the RAM of the virtual machine
     printf("-- START RAM DUMP --\n");
@@ -57,10 +54,10 @@ int ram_dump(vm_ *vm, int hex)
 	// decimal or hexidecimal format
     for (int i = 0; i < RAM_SIZE; i++) {
         byte_ *byte = ram->bytes[i]; // Get the current byte
-        if (hex) {
+        if (type == HEX) {
             printf("[0x%x] 0x%x\n", byte->address, byte->byte);
         }
-        else {
+        else if (type == DECIMAL) {
             printf("[%d] %d\n", byte->address, byte->byte);
 
         }
@@ -198,8 +195,6 @@ int delete_vm(vm_ *vm)
 
 	// Free the RAM and the VM itself.
     free(vm->ram);
-    free(vm->register_0);
-    free(vm->register_1);
     free(vm);
 
     return 0;
