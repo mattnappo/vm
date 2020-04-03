@@ -8,14 +8,15 @@
  * Matthew Nappo for the AP Computer Science Principles Create Task 2020.
  * There is only one small method that was not written by me, and it is
  * correctly credited in a comment above the declaraction of the method.
- * Other than that method, every single line of code was written by
- * me, Matthew Nappo.
+ * Other than that method (and the C standard library, of course), every single
+ * line of code was written by me, Matthew Nappo.
  *
  * The code is separated into three main sections delimited by dashes.
  * Traditionally, these three sections of the code would be separated into
- * multiple header files and implementation files. However, due to the format
- * of AP CSP submissions, I was forced to put all of the code into one single
- * source file in order for it to render well as a PDF.
+ * multiple header files and implementation files in order to add another layer
+ * of abstraction. However, due to the format of AP CSP submissions, I was
+ * forced to put all of the code into one single source file in order for it
+ * to render well as a PDF.
  *
 */
 
@@ -32,7 +33,7 @@ typedef struct read_file_return {
 } read_file_return;
 
 // tokenize_return allows for tokens and the amount of tokens to be returned
-// via a single call to the tokenize() method./ token
+// via a single call to the tokenize() method.
 typedef struct tokenize_return {
     char **tokens;
     unsigned int token_count;
@@ -84,7 +85,7 @@ read_file_return read_file(char *input_file)
 }
 
 // tokenize returns each token (an instruction or argument to instruction) given
-// and input file.
+// the path of the input file.
 tokenize_return tokenize(char *input_file)
 {
     // Prepare the char** of symbols
@@ -167,7 +168,7 @@ parsed_file parse(char *input_file)
     HLT (no params)
 */
 
-// instruction represents an instruction (really just an abstracted integer).
+// instruction represents an instruction (just an abstracted integer).
 typedef enum instruction {
     MOV, // move the value at one address to another address
     SET, // set the value of the byte at an address
@@ -192,7 +193,7 @@ typedef struct byte_ {
     int address;
 } byte_;
 
-// RAM represents a block of random-access memory.
+// RAM represents a block of random access memory.
 typedef struct RAM {
     int program_size;
     byte_ *bytes[RAM_SIZE];
@@ -202,12 +203,12 @@ typedef struct RAM {
 typedef struct vm_ {
     RAM *ram; // The random access memory of the virtual machine
 
-    register_ *instruction_register; // the instruction register
+    register_ *instruction_register; // The instruction register
     register_ *IAR; // The instruction address register
 } vm_;
 
-// init_vm initializes a new, blank virtual machine. It returns a pointer to
-// a new virtual machine.
+// init_vm initializes a new, blank virtual machine and returns a pointer
+// to that virtual machine.
 vm_ *init_vm()
 {
     // Allocate the needed memory for the virtual machine
@@ -223,7 +224,7 @@ vm_ *init_vm()
         byte->address = i; // Set the address of the byte
         byte->byte = 0; // Set the byte equal to 0, just to be safe
 
-        // Set the byte in the VM's RAM to the newly-made byte
+        // Set the current byte in the VM's RAM to the newly-made byte
         vm->ram->bytes[i] = byte;
     }
 
@@ -333,7 +334,7 @@ int eval(vm_ *vm)
 
         vm->ram->bytes[address] = new_byte;
         break;
-    case ADD: // Implementation/algorithm of the ADD instruction
+    case ADD: // Algorithm/implementation of the ADD instruction
         vm->IAR->byte++;
         int addend_addr_1 = vm->ram->bytes[vm->IAR->byte]->byte;
         vm->IAR->byte++;
@@ -363,7 +364,8 @@ int eval(vm_ *vm)
     return 1;
 }
 
-// execute executes the current program loaded into a virtual machine's RAM.
+// execute executes the current program loaded into a virtual machine's RAM and
+// returns the status of the virtual machine.
 int execute(vm_ *vm)
 {
     // Position the instruction address register
@@ -415,7 +417,8 @@ int delete_vm(vm_ *vm)
 
 // execute_file is the highest level of abstraction in the entire program.
 // It calls all the lower level abstractions to piece the entire program
-// together. 
+// together and fully execute the entire lifecycle of the virtual machine
+// implemented in this program.
 int execute_file(char *file_name)
 {
     // Call the parse() abstraction method to parse the file at the given path
@@ -431,7 +434,8 @@ int execute_file(char *file_name)
     // Call the init_vm() abstraction method to initialize the virtual machine
     vm_ *vm = init_vm();
 
-    // Load the program into the virtual machine
+    // Load the program into the virtual machine using the load_program()
+	// abstraction method
     status = load_program(vm, program, program_size);
     if (status != 0) { // Check that the load was successful
         printf("could not load program\n");
@@ -455,7 +459,10 @@ int execute_file(char *file_name)
     // Print the current state of the virtual machine's memory (again).
     ram_dump(vm, HEX);
     printf("program executed\n");
-    delete_vm(vm); // Free the memory allocated by the virtual machine
+    
+	// Call the delete_vm() abstraction method to free the memory allocated
+	// by the virtual machine and its components
+	delete_vm(vm);
 
     return 0;
 }
@@ -466,8 +473,10 @@ int main()
     // Call the execute_file() abstraction method, executing the program
     // located at the path "./input.prgm"
     int status = execute_file("input.prgm");
+
     printf("\n-- PRGM STATUS: %d --\n", status); // Print the status of the execun
-    return 0;
+    
+	return 0;
 }
 
 /* ---------- END MAIN FUNCTIONALITY ---------- */
