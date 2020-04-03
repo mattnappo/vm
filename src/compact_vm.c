@@ -2,6 +2,23 @@
 #include <stdio.h>
 #include <string.h>
 
+/* Information
+ *
+ * This code was entirely designed, implemented, and tested by
+ * Matthew Nappo for the AP Computer Science Principles Create Task 2020.
+ * There is only one small method that was not written by me, and it is
+ * correctly credited in a comment above the declaraction of the method.
+ * Other than that method, every single line of code was written by
+ * me, Matthew Nappo.
+ *
+ * The code is separated into three main sections delimited by dashes.
+ * Traditionally, these three sections of the code would be separated into
+ * multiple header files and implementation files. However, due to the format
+ * of AP CSP submissions, I was forced to put all of the code into one single
+ * source file in order for it to render well as a PDF.
+ *
+*/
+
 /* ---------- BEGIN PARSER CODE ---------- */
 
 #define TOKEN_SIZE 8
@@ -15,7 +32,14 @@ typedef struct read_file_return {
 } read_file_return;
 
 // tokenize_return allows for tokens and the amount of tokens to be returned
-// via a single call to the tokenize() method.
+// via a single call to the tokenize() method./ token
+typedef struct tokenize_return {
+    char **tokens;
+    unsigned int token_count;
+} tokenize_return;
+
+// parsed_file represents a parsed file, containing a program and its size,
+// ready to be executed by the virtual machine.
 typedef struct parsed_file {
     int *program;
     int size;
@@ -128,6 +152,7 @@ parsed_file parse(char *input_file)
 }
 
 /* ---------- END PARSER CODE ---------- */
+
 
 /* -------- BEGIN CORE VIRTUAL MACHINE CODE ---------- */
 
@@ -382,6 +407,67 @@ int delete_vm(vm_ *vm)
     return 0;
 }
 
-/* -------- END CORE VIRTUAL MACHINE CODE ---------- */i
+/* -------- END CORE VIRTUAL MACHINE CODE ---------- */
 
+
+/* ---------- BEGIN MAIN FUNCTIONALITY ---------- */
+
+// execute_file is the highest level of abstraction in the entire program.
+// It calls all the lower level abstractions to piece the entire program
+// together. 
+int execute_file(char *file_name)
+{
+	// Call the parse() abstraction method to parse the file at the given path
+    parsed_file raw_program = parse(file_name);
+
+	// Extract the program and the size of the program from the parse() call
+    int *program = raw_program.program;
+    int program_size = raw_program.size;
+    printf("program size: %d\n", program_size);
+
+    int status; // Initialize the status of the virtual machine
+
+	// Call the init_vm() abstraction method to initialize the virtual machine
+    vm_ *vm = init_vm();
+
+	// Load the program into the virtual machine
+    status = load_program(vm, program, program_size);
+    if (status != 0) { // Check that the load was successful
+        printf("could not load program\n");
+        return 1;
+    }
+
+	// Print the current memory (ram) of the virtual machine as hexadecimal
+	// The memory at the current state of the virtual machine at this point
+	// should contain only the bytes of the program that was just loaded
+	// into the virtual machine.
+    ram_dump(vm, HEX);
+
+	// Call the execute() abstraction method, which executes the program
+	// loaded into the virtual machine.
+    status = execute(vm);
+    if (status < 0) { // Check that the execution was successful
+        printf("error executing program\n");
+        return 1;
+    }
+
+	// Print the current state of the virtual machine's memory (again).
+    ram_dump(vm, HEX);
+    printf("program executed\n");
+	delete_vm(vm); // Free the memory allocated by the virtual machine
+
+    return 0;
+}
+
+// main is the entrypoint into the program.
+int main()
+{
+	// Call the execute_file() abstraction method, executing the program
+	// located at the path "./input.prgm"
+    int status = execute_file("input.prgm");
+    printf("\n-- PRGM STATUS: %d --\n", status); // Print the status of the execun
+    return 0;
+}
+
+/* ---------- END MAIN FUNCTIONALITY ---------- */
 

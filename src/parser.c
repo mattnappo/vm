@@ -1,13 +1,33 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "parser.h"
+
+/* ---------- BEGIN PARSER CODE ---------- */
 
 #define TOKEN_SIZE 8
 #define INSTRUCTION_LIMIT 100
 
+// read_file_return allows for both a buffer and the length of that buffer
+// to be returned by the read_file method.
+typedef struct read_file_return {
+    char *buffer;
+    long length;
+} read_file_return;
+
+// tokenize_return allows for tokens and the amount of tokens to be returned
+// via a single call to the tokenize() method.
+typedef struct parsed_file {
+    int *program;
+    int size;
+} parsed_file;
+
+// read_file reads a file as a char* from the disk given the filepath.
 read_file_return read_file(char *input_file)
 {
+	/* THE IMPLEMENTATION OF THIS FUNCTION WAS WRITTEN BY @Nils Pipenbrinck.
+	 * He can be reached at https://stackoverflow.com/users/15955/nils-pipenbrinck
+	*/
+
     char *buffer = 0;
     long length;
     FILE *file = fopen(input_file, "rb");
@@ -38,23 +58,31 @@ read_file_return read_file(char *input_file)
     return returns;
 }
 
+// tokenize returns each token (an instruction or argument to instruction) given
+// and input file.
 tokenize_return tokenize(char *input_file)
 {
+	// Prepare the char** of symbols
     char **symbols = malloc(sizeof(char) * INSTRUCTION_LIMIT * TOKEN_SIZE);
-    read_file_return file = read_file(input_file);
+    
+	// Call the read_file() abstraction method to read the file as a string
+	// given the path.
+	read_file_return file = read_file(input_file);
 
     int token_count = 0;
     char *delimiters = " \n";
 
+	// Read the current token
     char *token = strtok(file.buffer, delimiters);
-    symbols[token_count] = token;
+    symbols[token_count] = token; // Appent the token to the array of tokens
     token_count = 1;
-    while (token != NULL) {
+    while (token != NULL) { // Repeat this step for all tokens in the file
         token = strtok(NULL, delimiters);
         symbols[token_count] = token;
         token_count++;
     }
 
+	// Return the tokens and the amount of tokens
     token_count--;
     tokenize_return tokenized = {
         symbols,
@@ -63,11 +91,16 @@ tokenize_return tokenize(char *input_file)
     return tokenized;
 }
 
+// parse is the main abstraction method used for parsing a file. It is a
+// very nice abstraction because it only requires a filepath and returns
+// a program ready for the virtual machine to process.
 parsed_file parse(char *input_file)
 {
+	// Parse the input file and get its tokens
     tokenize_return tokens_raw = tokenize(input_file);
     int *parsed = malloc(sizeof(int) * INSTRUCTION_LIMIT);
 
+	// Convert the tokens into integers
     for (int i = 0; i < tokens_raw.token_count; i++) {
         char *token = tokens_raw.tokens[i];
 
@@ -85,10 +118,13 @@ parsed_file parse(char *input_file)
             parsed[i] = int_;
         }
     }
-    
+
+	// Return the program and amount of bytes it requires
     parsed_file program = {
         parsed,
         tokens_raw.token_count
     };
     return program;
 }
+
+/* ---------- END PARSER CODE ---------- */
