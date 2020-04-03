@@ -3,7 +3,7 @@
 
 // execute_file is the highest level of abstraction in the entire program.
 // It calls all the lower level abstractions to piece the entire program
-// together, 
+// together. 
 int execute_file(char *file_name)
 {
 	// Call the parse() abstraction method to parse the file at the given path
@@ -42,14 +42,13 @@ int execute_file(char *file_name)
 
 	// Print the current state of the virtual machine's memory (again).
     ram_dump(vm, 1);
-
     printf("program executed\n");
-    
 	delete_vm(vm); // Free the memory allocated by the virtual machine
 
     return 0;
 }
 
+// main is the entrypoint into the program.
 int main()
 {
 	// Call the execute_file() abstraction method, executing the program
