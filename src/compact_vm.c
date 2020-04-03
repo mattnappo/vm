@@ -49,7 +49,8 @@ typedef struct parsed_file {
 read_file_return read_file(char *input_file)
 {
     /* THE IMPLEMENTATION OF THIS FUNCTION WAS WRITTEN BY @Nils Pipenbrinck.
-     * He can be reached at https://stackoverflow.com/users/15955/nils-pipenbrinck
+     * He can be reached at
+	 * https://stackoverflow.com/users/15955/nils-pipenbrinck
     */
 
     char *buffer = 0;
