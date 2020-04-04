@@ -158,7 +158,7 @@ parsed_file parse(char *input_file)
 
 /* -------- BEGIN CORE VIRTUAL MACHINE CODE ---------- */
 
-#define RAM_SIZE 64
+#define RAM_SIZE 60
 
 /* INSTRUCTIONS
     SET <value> <address>
@@ -252,26 +252,49 @@ int load_program(vm_ *vm, int program[], int program_size)
     return 0;
 }
 
-// ram_dump prints the ram of a virtual machine in either hexadecimal or decimal.
+// ram_dump_no_addrs prints the ram of a virtual machine without displaying the
+// addresses of each byte. This makes the RAM much easier to read.
+int ram_dump_no_addrs(vm_ *vm, display_type type)
+{
+	RAM *mem = vm->ram; // Access the RAM of the virtual machine
+	printf("\n=== START RAM DUMP ===\n");
+	for (int i = 0; i < RAM_SIZE; i++) {
+        // Print the byte as either hexidecimal or decimal
+        if (mem->bytes[i]->byte == 0) {
+            printf("%s", (type == HEX) ? "00 " : " ");
+        }
+	    else if (type == HEX) {
+            printf("%x ", mem->bytes[i]->byte);
+        }
+        else if (type == DECIMAL) {
+            printf("%c", mem->bytes[i]->byte);
+        }
+    }
+    printf("\n=== END RAM DUMP ===\n");
+    return 0;
+}
+
+// ram_dump prints the RAM of a virtual machine in either hexadecimal or decimal.
 int ram_dump(vm_ *vm, display_type type)
 {
     RAM *ram = vm->ram; // Access the RAM of the virtual machine
-    printf("-- START RAM DUMP --\n");
-
+    printf("\n=== START RAM DUMP ===\n");
+	printf("[ADDRESS] VALUE\n");
+	printf("---------------\n");
     // For each byte in the RAM (which is an array), print that byte in either
     // decimal or hexidecimal format
     for (int i = 0; i < RAM_SIZE; i++) {
         byte_ *byte = ram->bytes[i]; // Get the current byte
         if (type == HEX) {
-            printf("[0x%x] 0x%x\n", byte->address, byte->byte);
+            printf("[0x%08x] 0x%08x\n", byte->address, byte->byte);
         }
         else if (type == DECIMAL) {
-            printf("[%d] %d\n", byte->address, byte->byte);
+            printf("[%08d] %08d\n", byte->address, byte->byte);
 
         }
     }
 
-    printf("-- END RAM DUMP --\n");
+    printf("\n=== END RAM DUMP ===\n");
     return 0;
 }
 
@@ -427,37 +450,42 @@ int execute_file(char *file_name)
     // Extract the program and the size of the program from the parse() call
     int *program = raw_program.program;
     int program_size = raw_program.size;
-    printf("program size: %d\n", program_size);
 
     int status; // Initialize the status of the virtual machine
 
     // Call the init_vm() abstraction method to initialize the virtual machine
     vm_ *vm = init_vm();
 
+	printf("\nvirtual machine memory before program load:\n");
+	// Print the current memory of the VM (should be all blank)
+	ram_dump(vm, DECIMAL);
+
     // Load the program into the virtual machine using the load_program()
 	// abstraction method
     status = load_program(vm, program, program_size);
     if (status != 0) { // Check that the load was successful
         printf("could not load program\n");
-        return 1;
+        return -1;
     }
 
+	printf("\nvirtual machine memory after program load:\n");
     // Print the current memory (ram) of the virtual machine as hexadecimal
     // The memory at the current state of the virtual machine at this point
     // should contain only the bytes of the program that was just loaded
     // into the virtual machine.
-    ram_dump(vm, HEX);
+    ram_dump(vm, DECIMAL);
 
     // Call the execute() abstraction method, which executes the program
     // loaded into the virtual machine.
     status = execute(vm);
     if (status < 0) { // Check that the execution was successful
         printf("error executing program\n");
-        return 1;
+        return -1;
     }
 
+	printf("\nvirtual machine memory after program execution:\n");
     // Print the current state of the virtual machine's memory (again).
-    ram_dump(vm, HEX);
+    ram_dump(vm, DECIMAL);
     printf("program executed\n");
     
 	// Call the delete_vm() abstraction method to free the memory allocated
@@ -468,11 +496,15 @@ int execute_file(char *file_name)
 }
 
 // main is the entrypoint into the program.
-int main()
+int main(int argc, char **args)
 {
+    if (argc != 2) {
+		printf("please supply input program path\n");
+		return -1;
+	}
     // Call the execute_file() abstraction method, executing the program
     // located at the path "./input.prgm"
-    int status = execute_file("input.prgm");
+    int status = execute_file(args[1]);
 
     printf("\n-- PRGM STATUS: %d --\n", status); // Print the status of the execun
     

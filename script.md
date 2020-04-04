@@ -1,0 +1,3 @@
+# Video Script
+
+For my Create Task I decided to implement a basic virtual machine in C. My virtual machine functions similarly to a how a CPU executes instructions which read and write to some random access memory. On the left is a text file containing an arbitrary program that the virtual machine will execute. When I run my code, the program is executed and the memory of the virtual machine at various crucial points is displayed as well. We see that the value 10 was set at the address 15 in memory, and we see that the value at address 15 was copied into the byte at the address 20 in memory. My virtual machine implements 4 instructions, SET, MOV, ADD, and HLT, which can be seen in use in a slightly more complicated arbitrary program.
